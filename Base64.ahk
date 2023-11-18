@@ -20,17 +20,21 @@ B64Encode(String, Encoding := "UTF-8")
 	static CRYPT_STRING_NOCRLF := 0x40000000
 
 	; add parameter type checking
-	if Encoding = 'RAW'
+
+
+	switch Encoding
 	{
+
+	case 'RAW':
 		; add a character to the size which will be removed later
 		; as we are removing the NULL before sending to CryptBinaryToStringW
 		String.size += 1
 		Binary := String
-	}
-	else
-	{
+		
+	default:
 		Binary := Buffer(StrPut(String, Encoding))
 		StrPut(String, Binary, Encoding)
+		
 	}
 
 	if !DllCall("crypt32\CryptBinaryToStringW",
